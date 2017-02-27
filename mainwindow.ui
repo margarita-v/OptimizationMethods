@@ -66,7 +66,10 @@
              <string>a:</string>
             </property>
             <property name="textFormat">
-             <enum>Qt::AutoText</enum>
+             <enum>Qt::PlainText</enum>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
             <property name="wordWrap">
              <bool>false</bool>
@@ -78,12 +81,18 @@
             <property name="text">
              <string>b:</string>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="lblEps">
             <property name="text">
              <string>eps:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -92,17 +101,20 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QLineEdit" name="editA">
-            <property name="inputMethodHints">
-             <set>Qt::ImhNone</set>
+           <widget class="QDoubleSpinBox" name="dsbA">
+            <property name="decimals">
+             <number>2</number>
+            </property>
+            <property name="maximum">
+             <double>150.000000000000000</double>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="editB"/>
+           <widget class="QDoubleSpinBox" name="dsbB"/>
           </item>
           <item>
-           <widget class="QLineEdit" name="editEps"/>
+           <widget class="QDoubleSpinBox" name="dsbEps"/>
           </item>
          </layout>
         </item>
@@ -148,19 +160,19 @@
         </item>
        </layout>
       </item>
-     </layout>
-    </item>
-    <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QLabel" name="lblSolve">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="lblSolve">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
