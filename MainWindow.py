@@ -5,7 +5,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
 
-
+import SegmentDivide
+            
 class Window(QMainWindow):
     
     def __init__(self):
@@ -28,37 +29,13 @@ class Window(QMainWindow):
             self.close()
 
     def paramsChanged(self):
-        self.lblSolve.setText("")
-
-    @staticmethod
-    def func(x):
-        return x*x
+        self.lblSolve.setText("")   
 
     def get_solve(self):
         a = self.dsbA.value()
         b = self.dsbB.value()
-        if a > b:
-            a, b = b, a
         eps = self.dsbEps.value()
-
-        curA = a
-        curB = b
-
-        while True:
-            delta = (curB - curA) / 4
-            u1 = (curB + curA - delta) / 2
-            u2 = (curB + curA + delta) / 2
-
-            if self.func(u1) <= self.func(u2):
-                curB = u2
-            else:
-                curA = u1
-            
-            # условие прекращения цикла
-            if not abs(curB - curA) >= eps:
-                break
-
-        self.lblSolve.setText("Решение задачи: " + str(curA))
+        self.lblSolve.setText("Решение задачи: " + str(SegmentDivide.solve(a, b, eps)))
     
 app = QApplication(sys.argv)
 window = Window()
