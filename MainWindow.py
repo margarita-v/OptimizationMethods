@@ -48,7 +48,7 @@ class Window(QMainWindow):
         else:
             result = GoldenSection.solve(a, b, eps)
 
-        self.lblSolve.setText("Решение задачи: " + str(result))
+        self.lblSolve.setText("Решение задачи: " + format(result, 'f'))
     
 app = QApplication(sys.argv)
 window = Window()
