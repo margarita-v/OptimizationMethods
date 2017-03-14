@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>392</width>
-    <height>212</height>
+    <height>254</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string/>
+   <string>Методы оптимизации</string>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
@@ -96,6 +96,16 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Выберите функцию</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -144,6 +154,9 @@
              <double>0.000100000000000</double>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="cbFunc"/>
           </item>
          </layout>
         </item>

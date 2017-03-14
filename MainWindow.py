@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 
 import os
 import sys
+import Functions
 import SegmentDivide
 import GoldenSection
             
@@ -18,11 +19,7 @@ class Window(QMainWindow):
     def initUI(self):
         uic.loadUi("mainwindow.ui", self)
         
-        if len(sys.argv) == 1:
-            self.setWindowTitle("Метод деления отрезка пополам")
-        else:
-            self.setWindowTitle("Метод золотого сечения")
-
+        self.cbFunc.addItems(Functions.func_str())
         self.btnGraph.clicked.connect(self.get_plot)
         self.btnSolve.clicked.connect(self.get_solve)
         self.btnSolve.setDefault(True)
