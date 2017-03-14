@@ -3,8 +3,9 @@
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication
-import sys
 
+import os
+import sys
 import SegmentDivide
 import GoldenSection
             
@@ -22,13 +23,18 @@ class Window(QMainWindow):
         else:
             self.setWindowTitle("Метод золотого сечения")
 
+        self.btnGraph.clicked.connect(self.get_plot)
         self.btnSolve.clicked.connect(self.get_solve)
         self.btnSolve.setDefault(True)
-        
+
         self.dsbA.valueChanged.connect(self.paramsChanged)
         self.dsbB.valueChanged.connect(self.paramsChanged)
         self.dsbEps.valueChanged.connect(self.paramsChanged)
-
+        
+        self.a = self.dsbA.value()
+        self.b = self.dsbB.value()
+        self.eps = self.dsbEps.value()
+        
         self.show()
 
     def keyPressEvent(self, e):
@@ -39,17 +45,15 @@ class Window(QMainWindow):
         self.lblSolve.setText("")   
 
     def get_solve(self):
-        a = self.dsbA.value()
-        b = self.dsbB.value()
-        eps = self.dsbEps.value()
-        
         if len(sys.argv) == 1:
-            result = SegmentDivide.solve(a, b, eps)
+            result = SegmentDivide.solve(self.a, self.b, self.eps)
         else:
-            result = GoldenSection.solve(a, b, eps)
-
+            result = GoldenSection.solve(self.a, self.b, self.eps)
         self.lblSolve.setText("Решение задачи: " + format(result, 'f'))
     
+    def get_plot(self):
+        os.system("python DrawPlot.py")
+
 app = QApplication(sys.argv)
 window = Window()
 sys.exit(app.exec_())
