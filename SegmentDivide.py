@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 def solve(a, b, eps, func):
 
     while abs(b - a) >= eps:

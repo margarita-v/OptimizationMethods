@@ -41,24 +41,32 @@ class Window(QMainWindow):
         self.method_index = 0
 
         self.show()
-
+    
+    # выход из программы по нажатию Esc
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Escape:
             self.close()
 
+    # событие изменения значений концов отрезка и точности eps
     def paramsChanged(self):
         self.a = self.dsbA.value()
         self.b = self.dsbB.value()
         self.eps = self.dsbEps.value()
         self.lblSolve.setText("")   
-
+    
+    # запоминаем номер выбранной пользователем функции
     def funcSelection(self, i):
         self.func_index = i
+        self.lblSolve.setText("")   
 
+    # запоминаем номер выбранного пользователем метода
     def methodSelection(self, i):
         self.method_index = i
+        self.lblSolve.setText("")   
 
+    # решение задачи
     def get_solve(self):
+        # по номеру получаем выбранную функцию и отправляем ее выбранному методу решения
         func = Functions.choose_func(self.func_index)
         if self.method_index == 0:
             result = SegmentDivide.solve(self.a, self.b, self.eps, func)
@@ -66,6 +74,7 @@ class Window(QMainWindow):
             result = GoldenSection.solve(self.a, self.b, self.eps, func)
         self.lblSolve.setText("Решение задачи: " + format(result, 'f'))
     
+    # построение графика выбранной функции
     def get_plot(self):
         os.system("python DrawPlot.py " + str(self.func_index))
 
