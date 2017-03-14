@@ -1,11 +1,9 @@
-from math import sin
-
-def func(x, num):
+def choose_func(num):
     if num == 0:
-        return x*x
+        return lambda x: x*x
     if num == 1:
-        return x*x*x
-    return sin(x)
+        return lambda x: x*x*x
+    return lambda x: abs(x)
 
 def func_str():
-    return ["f(x) = x*x", "f(x) = x^3", "f(x) = sin(x)"]
+    return ["f(x) = x*x", "f(x) = x^3", "f(x) = |x|"]

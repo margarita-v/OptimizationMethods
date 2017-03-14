@@ -20,6 +20,12 @@ class Window(QMainWindow):
         uic.loadUi("mainwindow.ui", self)
         
         self.cbFunc.addItems(Functions.func_str())
+        self.cbFunc.currentIndexChanged.connect(self.funcSelection)
+        
+        self.cbMethod.addItems(["Метод деления отрезка пополам", \
+                "Метод золотого сечения", "Метод парабол"])
+        self.cbMethod.currentIndexChanged.connect(self.methodSelection)
+
         self.btnGraph.clicked.connect(self.get_plot)
         self.btnSolve.clicked.connect(self.get_solve)
         self.btnSolve.setDefault(True)
@@ -31,7 +37,9 @@ class Window(QMainWindow):
         self.a = self.dsbA.value()
         self.b = self.dsbB.value()
         self.eps = self.dsbEps.value()
-        
+        self.func_index = 0
+        self.method_index = 0
+
         self.show()
 
     def keyPressEvent(self, e):
@@ -39,17 +47,27 @@ class Window(QMainWindow):
             self.close()
 
     def paramsChanged(self):
+        self.a = self.dsbA.value()
+        self.b = self.dsbB.value()
+        self.eps = self.dsbEps.value()
         self.lblSolve.setText("")   
 
+    def funcSelection(self, i):
+        self.func_index = i
+
+    def methodSelection(self, i):
+        self.method_index = i
+
     def get_solve(self):
-        if len(sys.argv) == 1:
-            result = SegmentDivide.solve(self.a, self.b, self.eps)
-        else:
-            result = GoldenSection.solve(self.a, self.b, self.eps)
+        func = Functions.choose_func(self.func_index)
+        if self.method_index == 0:
+            result = SegmentDivide.solve(self.a, self.b, self.eps, func)
+        elif self.method_index == 1:
+            result = GoldenSection.solve(self.a, self.b, self.eps, func)
         self.lblSolve.setText("Решение задачи: " + format(result, 'f'))
     
     def get_plot(self):
-        os.system("python DrawPlot.py")
+        os.system("python DrawPlot.py " + str(self.func_index))
 
 app = QApplication(sys.argv)
 window = Window()

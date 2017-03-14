@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import sys
-
-def func(x):
-    return x*x
-
-def solve(a, b, eps):
+def solve(a, b, eps, func):
 
     while abs(b - a) >= eps:
         delta = (b - a) / 4

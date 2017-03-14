@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>392</width>
-    <height>254</height>
+    <width>476</width>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -106,6 +106,16 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Метод решения</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -157,6 +167,9 @@
           </item>
           <item>
            <widget class="QComboBox" name="cbFunc"/>
+          </item>
+          <item>
+           <widget class="QComboBox" name="cbMethod"/>
           </item>
          </layout>
         </item>
