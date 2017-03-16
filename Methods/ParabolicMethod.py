@@ -1,26 +1,12 @@
 # -*- coding utf-8 -*-
 
-# заданная функция
-def I(x):
-    return x*x
-
-# проверка, является ли тройка точек выпуклой для заданной функции
-def is_convex(u1, u2, u3):
-    d1 = I(u1) - I(u2)
-    d2 = I(u3) - I(u2)
-    return d1 >= 0 and d2 >= 0 and d1 + d2 > 0
-
-# вычисление точки минимума параболы,
-# построенной через выпуклую тройку точек
-def W(u1, u2, u3):
-    I1 = I(u1)
-    I2 = I(u2)
-    I3 = I(u3)
-    return -0,5 * ((I2 - I1)*u3*u3 + (I1 - I3)*u2*u2 + (I3 - I2)*u1*u1) / \
-            ((I1 - I2)*u3 + (I3 - I1)*u2 + (I2 - I3)*u1)
+# заданная пользователем функция
+func = None
 
 # реализация метода парабол
-def solve(a, b, u0):
+def parabolic_method(a, b, u0, F):
+    global func
+    func = F
     h = (b - a) / 16
     i = 2
 
@@ -29,15 +15,15 @@ def solve(a, b, u0):
     t1 = t0 + h
     
     while True:
-        I0 = I(t0)
-        I1 = I(t1)
+        I0 = func(t0)
+        I1 = func(t1)
 
         if I1 <= I0:
             t2 = t0 + h*(2 ** i)
-            I2 = I(t2)
+            I2 = func(t2)
         else:
             t1 = t0 - h
-            I0 = I(t0 + h)
+            I0 = func(t0 + h)
             t2 = t0 - h*(2 ** i)
 
         # проверка принадлежности новой точки отрезку
@@ -56,3 +42,18 @@ def solve(a, b, u0):
     else:
         # ни одна тройка не является выпуклой
         return a
+
+# проверка, является ли тройка точек выпуклой для заданной функции
+def is_convex(u1, u2, u3):
+    d1 = func(u1) - func(u2)
+    d2 = func(u3) - func(u2)
+    return d1 >= 0 and d2 >= 0 and d1 + d2 > 0
+
+# вычисление точки минимума параболы,
+# построенной через выпуклую тройку точек
+def W(u1, u2, u3):
+    I1 = func(u1)
+    I2 = func(u2)
+    I3 = func(u3)
+    return -0.5 * ((I2 - I1)*u3*u3 + (I1 - I3)*u2*u2 + (I3 - I2)*u1*u1) / \
+            ((I1 - I2)*u3 + (I3 - I1)*u2 + (I2 - I3)*u1)

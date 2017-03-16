@@ -7,8 +7,9 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import os
 import sys
 import Functions
-import SegmentDivide
-import GoldenSection
+from Methods.SegmentDivide import segment_divide
+from Methods.GoldenSection import golden_section
+from Methods.ParabolicMethod import parabolic_method
             
 class Window(QMainWindow):
     
@@ -29,6 +30,9 @@ class Window(QMainWindow):
         self.btnGraph.clicked.connect(self.get_plot)
         self.btnSolve.clicked.connect(self.get_solve)
         self.btnSolve.setDefault(True)
+        
+        self.lblFirstPoint.setVisible(False)
+        self.dsbFirstPoint.setVisible(False)
 
         self.dsbA.valueChanged.connect(self.paramsChanged)
         self.dsbB.valueChanged.connect(self.paramsChanged)
@@ -63,15 +67,19 @@ class Window(QMainWindow):
     def methodSelection(self, i):
         self.method_index = i
         self.lblSolve.setText("")   
+        self.lblFirstPoint.setVisible(i > 1)
+        self.dsbFirstPoint.setVisible(i > 1)
 
     # решение задачи
     def get_solve(self):
         # по номеру получаем выбранную функцию и отправляем ее выбранному методу решения
         func = Functions.choose_func(self.func_index)
         if self.method_index == 0:
-            result = SegmentDivide.solve(self.a, self.b, self.eps, func)
+            result = segment_divide(self.a, self.b, self.eps, func)
         elif self.method_index == 1:
-            result = GoldenSection.solve(self.a, self.b, self.eps, func)
+            result = golden_section(self.a, self.b, self.eps, func)
+        else:
+            result = parabolic_method(self.a, self.b, self.dsbFirstPoint.value(), func)
         self.lblSolve.setText("Решение задачи: " + format(result, 'f'))
     
     # построение графика выбранной функции

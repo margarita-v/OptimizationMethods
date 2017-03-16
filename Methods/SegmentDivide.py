@@ -1,5 +1,4 @@
-def solve(a, b, eps, func):
-
+def segment_divide(a, b, eps, func):
     while abs(b - a) >= eps:
         delta = (b - a) / 4
         u1 = (b + a - delta) / 2
@@ -9,5 +8,4 @@ def solve(a, b, eps, func):
             b = u2
         else:
             a = u1
-
     return (a + b) / 2

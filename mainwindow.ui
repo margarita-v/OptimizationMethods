@@ -116,6 +116,16 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QLabel" name="lblFirstPoint">
+            <property name="text">
+             <string>Введите начальную точку:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -170,6 +180,16 @@
           </item>
           <item>
            <widget class="QComboBox" name="cbMethod"/>
+          </item>
+          <item>
+           <widget class="QDoubleSpinBox" name="dsbFirstPoint">
+            <property name="minimum">
+             <double>-100.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>100.000000000000000</double>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
