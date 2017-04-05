@@ -23,7 +23,7 @@ class Window(QMainWindow):
         self.cbFunc.addItems(Functions.func_str())
         self.cbFunc.currentIndexChanged.connect(self.funcSelection)
         
-        self.cbMethod.addItems(["Метод деления отрезка пополам", \
+        self.cbMethod.addItems(["Метод деления отрезка пополам",
                 "Метод золотого сечения", "Метод парабол"])
         self.cbMethod.currentIndexChanged.connect(self.methodSelection)
 
@@ -79,7 +79,8 @@ class Window(QMainWindow):
         elif self.method_index == 1:
             result = golden_section(self.a, self.b, self.eps, func)
         else:
-            result = parabolic_method(self.a, self.b, self.dsbFirstPoint.value(), func)
+            result = parabolic_method(self.a, self.b, 
+                    self.dsbFirstPoint.value(), (self.b - self.a) / 16, self.eps, func)
         self.lblSolve.setText("Решение задачи: " + format(result, 'f'))
     
     # построение графика выбранной функции
