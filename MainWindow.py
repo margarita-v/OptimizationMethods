@@ -80,7 +80,7 @@ class Window(QMainWindow):
             result = golden_section(self.a, self.b, self.eps, func)
         else:
             result = parabolic_method(self.a, self.b, 
-                    self.dsbFirstPoint.value(), (self.b - self.a) / 16, self.eps, func)
+                    self.dsbFirstPoint.value(), self.eps, func)
         self.lblSolve.setText("Решение задачи: " + format(result, 'f'))
     
     # построение графика выбранной функции
