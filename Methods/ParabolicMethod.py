@@ -14,11 +14,7 @@ def parabolic_method(a, b, u0, eps, F):
     t0 = u0
     t1 = t0 + h
     
-    points = [t0, t1]
-    values = [func(t0), func(t1)]
-
     while True:
-        #print(points)
         I0 = func(t0)
         I1 = func(t1)
 
@@ -26,53 +22,48 @@ def parabolic_method(a, b, u0, eps, F):
             t2 = t0 + h*(2 ** i)
         else:
             t1 = t0 - h
-            I1 = func(t1)
-            I0 = func(t0 + h)
+            I0 = I1
             t2 = t0 - h*(2 ** i)
-
+        
+        I1 = func(t1)
         I2 = func(t2)
+
         # если точки или значения функций стали близки с точностью eps, то процесс завершен
-        stop = check(t0, t1, eps) or check(t1, t2, eps) or check(t0, t2, eps)
-                #check(I0, I1, eps) or check(I1, I2, eps) or check(I0, I2, eps)
+        stop = check(t0, t2, eps) and check(t1, t2, eps) and check(t0, t2, eps) or \
+                check(I0, I1, eps) and check(I1, I2, eps) and check(I0, I2, eps)
         if stop:
             return t0
 
         # проверка принадлежности новой точки отрезку
         if (t2 >= a) and (t2 <= b):
             # если принадлежит, проверить, является ли текущая тройка точек выпуклой
-            isConvex = is_convex(t0, t1, t2)
-            if not isConvex:
-                points.append(t2)
-                values.append(I2)
+            if not is_convex(t0, t1, t2):
                 # переходим к следующей точке
-                t0 = t1
-                t1 = t2
+                t0 = t2
+                t1 = t2 + h
                 i = i + 1
             else:
                 # найдена выпуклая тройка
-                w = W(t0, t1, t2)
-                return w if (w >= a) and (w <= b) else a
+                return W(t0, t1, t2)
         else:
             # выпуклая тройка не найдена
             # меняем начальную точку и уточняем точку минимума
             w = a if t2 < a else b
-            points.append(w)
-            values.append(func(w))
-
+            
+            points = [t0, t1, w]
+            values = [I0, I1, func(w)]
+            
             In = min(values)
             index = values.index(In)
             Un = points[index]
 
-            if Un >= a and Un <= b:
-                return Un
-            if abs(w - Un) < eps:
+            if Un < a or Un > b or abs(w - Un) < eps:
                 return w
 
             h = h / 2
+            i = 2
             t0 = Un
             t1 = t0 + h
-            points = [t0, t1]
-            values = [func(t0), func(t1)]
 
 def check(x, y, eps):
     return abs(x - y) < eps
