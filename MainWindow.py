@@ -10,7 +10,20 @@ import Functions
 from Methods.SegmentDivide import segment_divide
 from Methods.GoldenSection import golden_section
 from Methods.ParabolicMethod import parabolic_method
-            
+
+METHODS = ["Метод деления отрезка пополам", "Метод золотого сечения",
+        "Метод парабол"]
+
+# Параметры для методов нахождения минимума функции
+a = 0
+b = 0
+eps = 0
+x0 = 0
+# Номер выбранной пользователем функции
+func_index = 0
+# Номер выбранного пользователем метода
+method_index = 0
+
 class Window(QMainWindow):
     
     def __init__(self):
@@ -23,8 +36,7 @@ class Window(QMainWindow):
         self.cbFunc.addItems(Functions.func_str())
         self.cbFunc.currentIndexChanged.connect(self.funcSelection)
         
-        self.cbMethod.addItems(["Метод деления отрезка пополам",
-                "Метод золотого сечения", "Метод парабол"])
+        self.cbMethod.addItems(METHODS)
         self.cbMethod.currentIndexChanged.connect(self.methodSelection)
 
         self.btnGraph.clicked.connect(self.get_plot)
@@ -37,12 +49,12 @@ class Window(QMainWindow):
         self.dsbA.valueChanged.connect(self.paramsChanged)
         self.dsbB.valueChanged.connect(self.paramsChanged)
         self.dsbEps.valueChanged.connect(self.paramsChanged)
+        self.dsbFirstPoint.valueChanged.connect(self.paramsChanged)
         
-        self.a = self.dsbA.value()
-        self.b = self.dsbB.value()
-        self.eps = self.dsbEps.value()
-        self.func_index = 0
-        self.method_index = 0
+        global a, b, eps
+        a = self.dsbA.value()
+        b = self.dsbB.value()
+        eps = self.dsbEps.value()
 
         self.show()
     
@@ -53,19 +65,28 @@ class Window(QMainWindow):
 
     # событие изменения значений концов отрезка и точности eps
     def paramsChanged(self):
-        self.a = self.dsbA.value()
-        self.b = self.dsbB.value()
-        self.eps = self.dsbEps.value()
+        global a, b, eps, x0
+        a = self.dsbA.value()
+        self.dsbB.setMinimum(a)
+
+        b = self.dsbB.value()
+        self.dsbFirstPoint.setMinimum(a)
+        self.dsbFirstPoint.setMaximum(b)
+
+        eps = self.dsbEps.value()
+        x0 = self.dsbFirstPoint.value()
         self.lblSolve.setText("")   
     
     # запоминаем номер выбранной пользователем функции
     def funcSelection(self, i):
-        self.func_index = i
+        global func_index
+        func_index = i
         self.lblSolve.setText("")   
 
     # запоминаем номер выбранного пользователем метода
     def methodSelection(self, i):
-        self.method_index = i
+        global method_index
+        method_index = i
         self.lblSolve.setText("")   
         self.lblFirstPoint.setVisible(i > 1)
         self.dsbFirstPoint.setVisible(i > 1)
@@ -73,19 +94,19 @@ class Window(QMainWindow):
     # решение задачи
     def get_solve(self):
         # по номеру получаем выбранную функцию и отправляем ее выбранному методу решения
-        func = Functions.choose_func(self.func_index)
-        if self.method_index == 0:
-            result = segment_divide(self.a, self.b, self.eps, func)
-        elif self.method_index == 1:
-            result = golden_section(self.a, self.b, self.eps, func)
+        func = Functions.choose_func(func_index)
+        if method_index == 0:
+            result = segment_divide(a, b, eps, func)
+        elif method_index == 1:
+            result = golden_section(a, b, eps, func)
         else:
-            result = parabolic_method(self.a, self.b, 
-                    self.dsbFirstPoint.value(), self.eps, func)
-        self.lblSolve.setText("Решение задачи: " + format(result, 'f'))
+            result = parabolic_method(a, b, x0, eps, func)
+        self.lblSolve.setText("Решение задачи:\n\n" + "x = " + format(result, 'f') + 
+                "\n\nf(x) = " + format(func(result), 'f'))
     
     # построение графика выбранной функции
     def get_plot(self):
-        os.system("python DrawPlot.py " + str(self.func_index))
+        os.system("python DrawPlot.py " + str(func_index))
 
 app = QApplication(sys.argv)
 window = Window()

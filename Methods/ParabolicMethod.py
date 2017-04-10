@@ -7,6 +7,8 @@ func = None
 def parabolic_method(a, b, u0, eps, F):
     global func
     func = F
+    if a > b:
+        a, b = b, a
     i = 2
     h = (b - a) / 16
 
