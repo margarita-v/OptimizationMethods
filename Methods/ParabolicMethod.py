@@ -55,16 +55,16 @@ def parabolic_method(a, b, u0, eps, F):
             points = [t0, t1, w]
             values = [I0, I1, func(w)]
             
+            if abs(t0 - w) < eps:
+                return t0
+
             In = min(values)
             index = values.index(In)
             Un = points[index]
 
-            if Un < a or Un > b or abs(w - Un) < eps:
-                return w
-
             h = h / 2
             i = 2
-            t0 = Un
+            t0 = Un if Un >= a and Un <= b else w
             t1 = t0 + h
 
 def check(x, y, eps):
