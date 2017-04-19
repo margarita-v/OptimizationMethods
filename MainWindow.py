@@ -7,12 +7,14 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import os
 import sys
 import Functions
-from Methods.SegmentDivide import segment_divide
-from Methods.GoldenSection import golden_section
+
+from Methods.SegmentDivide   import segment_divide
+from Methods.GoldenSection   import golden_section
 from Methods.ParabolicMethod import parabolic_method
+from Methods.NewtonMethod    import newton_method
 
 METHODS = ["Метод деления отрезка пополам", "Метод золотого сечения",
-        "Метод парабол"]
+        "Метод парабол", "Метод Ньютона"]
 
 # Параметры для методов нахождения минимума функции
 a = 0
@@ -99,8 +101,10 @@ class Window(QMainWindow):
             result = segment_divide(a, b, eps, func)
         elif method_index == 1:
             result = golden_section(a, b, eps, func)
-        else:
+        elif method_index == 2:
             result = parabolic_method(a, b, x0, eps, func)
+        else:
+            result = newton_method(a, b, x0, eps, func)
         self.lblSolve.setText("Решение задачи:\n\n" + "x = " + format(result, 'f') + 
                 "\n\nf(x) = " + format(func(result), 'f'))
     
