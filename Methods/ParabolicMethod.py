@@ -24,16 +24,13 @@ def parabolic_method(a, b, u0, eps, F):
             t2 = t0 + h*(2 ** i)
         else:
             t1 = t0 - h
-            I0 = I1
+            #I0 = I1
+            I1 = func(t1)
             t2 = t0 - h*(2 ** i)
-        
-        I1 = func(t1)
         I2 = func(t2)
 
         # если точки или значения функций стали близки с точностью eps, то процесс завершен
-        stop = check(t0, t2, eps) and check(t1, t2, eps) and check(t0, t2, eps) or \
-                check(I0, I1, eps) and check(I1, I2, eps) and check(I0, I2, eps)
-        if stop:
+        if abs(t0 - t2) < eps or abs(I0 - I2) < eps:
             return t0
 
         # проверка принадлежности новой точки отрезку
@@ -67,9 +64,6 @@ def parabolic_method(a, b, u0, eps, F):
             t0 = Un if Un >= a and Un <= b else w
             t1 = t0 + h
 
-def check(x, y, eps):
-    return abs(x - y) < eps
-
 # проверка, является ли тройка точек выпуклой для заданной функции
 def is_convex(u1, u2, u3):
     d1 = func(u1) - func(u2)
@@ -84,3 +78,6 @@ def W(u1, u2, u3):
     I3 = func(u3)
     return -0.5 * ((I2 - I1)*u3*u3 + (I1 - I3)*u2*u2 + (I3 - I2)*u1*u1) / \
             ((I1 - I2)*u3 + (I3 - I1)*u2 + (I2 - I3)*u1)
+
+#def check(x, y, eps):
+ #   return abs(x - y) < eps
