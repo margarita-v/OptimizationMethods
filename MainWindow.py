@@ -6,12 +6,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 
 import os
 import sys
-import Functions
-
-from Methods.SegmentDivide   import segment_divide
-from Methods.GoldenSection   import golden_section
-from Methods.ParabolicMethod import parabolic_method
-from Methods.NewtonMethod    import newton_method
+from Solve import onedimen_solve, twodimen_solve
+from Functions import onedimen_func_str, twodimen_func_str
 
 METHODS = ["Метод деления отрезка пополам", "Метод золотого сечения",
         "Метод парабол", "Метод Ньютона"]
@@ -32,10 +28,10 @@ class Window(QMainWindow):
         uic.loadUi("mainwindow.ui", self)
         
         # Заполнение выпадающего списка доступных функций
-        self.cbFunc.addItems(Functions.func_str())
+        self.cbFunc.addItems(onedimen_func_str())
         self.cbFunc.currentIndexChanged.connect(self.funcSelection)
         # second tab
-        #self.cbFuncSecond.addItems
+        self.cbFuncSecond.addItems(twodimen_func_str())
         self.cbFuncSecond.currentIndexChanged.connect(self.funcSelection)
         
         # Заполнение выпадающего списка доступных методов
@@ -129,6 +125,10 @@ class Window(QMainWindow):
         self.dsbVectorX.setMaximum(self.x2)
         self.dsbVectorY.setMinimum(self.y1)
         self.dsbVectorY.setMaximum(self.y2)
+
+        self.eps = self.dsbEpsSecond.value()
+        self.alpha = self.dsbAlpha.value()
+        self.lblSolveSecond.setText("")
     
     # запоминаем номер выбранной пользователем функции
     def funcSelection(self, i):
@@ -146,18 +146,16 @@ class Window(QMainWindow):
 
     # решение задачи
     def get_solve(self):
-        # по номеру получаем выбранную функцию и отправляем ее выбранному методу решения
-        func = Functions.choose_func(func_index)
-        if method_index == 0:
-            result = segment_divide(self.a, self.b, self.eps, func)
-        elif method_index == 1:
-            result = golden_section(self.a, self.b, self.eps, func)
-        elif method_index == 2:
-            result = parabolic_method(self.a, self.b, self.x0, self.eps, func)
+        onFirstTab = self.tabWidget.currentIndex() == 0
+        
+        point, value = onedimen_solve(method_index, func_index, 
+                self.a, self.b, self.eps, self.x0)
+        message = "Решение задачи:\n\n" + "x = " + format(point, 'f') + \
+                "\n\nf(x) = " + format(value, 'f')
+        if onFirstTab:
+            self.lblSolve.setText(message)
         else:
-            result = newton_method(self.a, self.b, self.x0, self.eps, func)
-        self.lblSolve.setText("Решение задачи:\n\n" + "x = " + format(result, 'f') + 
-                "\n\nf(x) = " + format(func(result), 'f'))
+            self.lblSolveSecond.setText(message)
     
     # построение графика выбранной функции
     def get_plot(self):
