@@ -1,6 +1,6 @@
 def segment_divide(a, b, eps, func):
-    while abs(b - a) >= eps:
-        delta = (b - a) / 4
+    while (b - a) >= eps:
+        delta = (b - a) / 16
         u1 = (b + a - delta) / 2
         u2 = (b + a + delta) / 2
         

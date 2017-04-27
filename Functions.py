@@ -3,13 +3,13 @@
 # Функции для методов одномерной оптимизации
 def choose_onedimen_func(num):
     if num == 0:
-        return lambda x: x*x
+        return lambda x: x*x*x - x
     if num == 1:
-        return lambda x: (x + 2)**2 - 2
+        return lambda x: x*x - 5*x
     return lambda x: (x - 5)**2 + 8
 
 def onedimen_func_str():
-    return ["f(x) = x*x", "f(x) = (x + 2)^2 - 2", "f(x) = (x - 5)^2 + 8"]
+    return ["f(x) = x*x*x - x", "f(x) = x*x - 5*x", "f(x) = (x - 5)^2 + 8"]
 
 # Функции для методов многомерной оптимизации
 def choose_twodimen_func(num):

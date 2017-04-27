@@ -13,7 +13,7 @@ def golden_section(a, b, eps, func):
     u1 = U1(a, b)
     u2 = U2(a, b)
     
-    while abs(b - a) > eps:
+    while (b - a) >= eps:
         if func(u1) <= func(u2):
             b = u2
             u2 = u1
