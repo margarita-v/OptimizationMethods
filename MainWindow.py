@@ -45,9 +45,6 @@ class Window(QMainWindow):
         self.btnGraph.clicked.connect(self.get_plot)
         self.btnSolve.clicked.connect(self.get_solve)
         self.btnSolve.setDefault(True)
-        # second tab
-        #self.btnSolveSecond.clicked.connect(self.get_solve)
-        self.btnSolveSecond.setDefault(True)
         
         self.lblFirstPoint.setVisible(False)
         self.dsbFirstPoint.setVisible(False)
@@ -70,6 +67,7 @@ class Window(QMainWindow):
         # Обработчик переключения между вкладками
         self.tabWidget.currentChanged.connect(self.onTabChanged)
         self.tabWidget.setCurrentIndex(0)
+        self.onFirstTab = True
 
         # Параметры для одномерной оптимизации
         self.a = self.dsbA.value()
@@ -95,6 +93,7 @@ class Window(QMainWindow):
 
     # событие переключения между вкладками
     def onTabChanged(self, i):
+        self.onFirstTab = i == 0
         self.eps = self.dsbEps.value() if i == 0 else self.dsbEpsSecond.value()
 
     # событие изменения значений параметров для методов одномерной оптимизации
@@ -146,20 +145,22 @@ class Window(QMainWindow):
 
     # решение задачи
     def get_solve(self):
-        onFirstTab = self.tabWidget.currentIndex() == 0
         
         point, value = onedimen_solve(method_index, func_index, 
                 self.a, self.b, self.eps, self.x0)
         message = "Решение задачи:\n\n" + "x = " + format(point, 'f') + \
                 "\n\nf(x) = " + format(value, 'f')
-        if onFirstTab:
+        if self.onFirstTab:
             self.lblSolve.setText(message)
         else:
             self.lblSolveSecond.setText(message)
     
     # построение графика выбранной функции
     def get_plot(self):
-        os.system("python DrawPlot.py " + str(func_index))
+        if self.onFirstTab:
+            os.system("python DrawPlot.py 1 " + str(func_index))
+        else:
+            os.system("python DrawPlot.py 2 " + str(func_index))
 
 app = QApplication(sys.argv)
 window = Window()
