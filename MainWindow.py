@@ -33,16 +33,10 @@ class Window(QMainWindow):
         # Заполнение выпадающего списка доступных функций
         self.cbFunc.addItems(onedimen_func_str())
         self.cbFunc.currentIndexChanged.connect(self.funcSelection)
-        # second tab
-        self.cbFuncSecond.addItems(twodimen_func_str())
-        self.cbFuncSecond.currentIndexChanged.connect(self.funcSelection)
         
         # Заполнение выпадающего списка доступных методов
         self.cbMethod.addItems(METHODS)
         self.cbMethod.currentIndexChanged.connect(self.methodSelection)
-        # second tab
-        self.cbMethodSecond.addItems(METHODS_MULTIDIMENSIONAL)
-        self.cbMethodSecond.currentIndexChanged.connect(self.methodSelection)
 
         # Обработчики для кнопок
         self.btnGraph.clicked.connect(self.get_plot)
@@ -64,7 +58,6 @@ class Window(QMainWindow):
         self.dsbY2.valueChanged.connect(self.paramsChangedSecond)
         self.dsbVectorX.valueChanged.connect(self.paramsChangedSecond)
         self.dsbVectorY.valueChanged.connect(self.paramsChangedSecond)
-        self.dsbEpsSecond.valueChanged.connect(self.paramsChangedSecond)
         self.dsbAlpha.valueChanged.connect(self.paramsChangedSecond)
         
         # Обработчик переключения между вкладками
@@ -97,8 +90,15 @@ class Window(QMainWindow):
     # событие переключения между вкладками
     def onTabChanged(self, i):
         self.onFirstTab = i == 0
+        self.cbFunc.clear()
+        self.cbMethod.clear()
+        if i == 0:
+            self.cbFunc.addItems(onedimen_func_str())
+            self.cbMethod.addItems(METHODS)
+        else:
+            self.cbFunc.addItems(twodimen_func_str())
+            self.cbMethod.addItems(METHODS_MULTIDIMENSIONAL)
         self.lblSolve.setText("")   
-        self.eps = self.dsbEps.value() if i == 0 else self.dsbEpsSecond.value()
 
     # событие изменения значений параметров для методов одномерной оптимизации
     def paramsChanged(self):
