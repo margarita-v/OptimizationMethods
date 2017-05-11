@@ -4,65 +4,62 @@
 func = None
 
 # реализация метода парабол
-def parabolic_method(a, b, u0, eps, F):
+def parabolic_method(a, b, eps, F):
     global func
     func = F
     if a > b:
         a, b = b, a
-    i = 2
+    i = 1
     h = (b - a) / 16
 
-    # текущая тройка точек: t0, t1, t2
-    t0 = u0
-    t1 = t0 + h
+    u0 = u1 = a + (b - a) / 2
+    u2 = u0 + h
+
+    I0 = func(u0)
+    I2 = func(u2)
+    if I0 < I2:
+        minU = u0
+        minF = I0
+    else:
+        minU = u2
+        minF = I2
+    isInSegment = True
     
-    while True:
-        I0 = func(t0)
-        I1 = func(t1)
+    while isInSegment:
+        u0 = u1
+        u1 = u2
+
+        I0 = func(u0)
+        I1 = func(u1)
 
         if I1 <= I0:
-            t2 = t0 + h*(2 ** i)
+            u2 = u0 + h*(2 ** i)
         else:
-            t1 = t0 - h
-            #I0 = I1
-            I1 = func(t1)
-            t2 = t0 - h*(2 ** i)
-        I2 = func(t2)
+            u1 = u0 - h
+            I0 = I1
+            #I1 = func(u1)
+            u2 = u0 - h*(2 ** i)
+        I2 = func(u2)
 
-        # если точки или значения функций стали близки с точностью eps, то процесс завершен
-        if abs(t0 - t2) < eps or abs(I0 - I2) < eps:
-            return t0
+        # если выпуклая тройка найдена
+        if is_convex(u0, u1, u2):
+            return W(u0, u1, u2)
+        
+        if I2 < minF:
+            minF = I2
+            minU = u2
+        
+        isInSegment = (u2 >= a) and (u2 <= b)
 
-        # проверка принадлежности новой точки отрезку
-        if (t2 >= a) and (t2 <= b):
-            # если принадлежит, проверить, является ли текущая тройка точек выпуклой
-            if not is_convex(t0, t1, t2):
-                # переходим к следующей точке
-                t0 = t2
-                t1 = t2 + h
-                i = i + 1
-            else:
-                # найдена выпуклая тройка
-                return W(t0, t1, t2)
-        else:
-            # выпуклая тройка не найдена
-            # меняем начальную точку и уточняем точку минимума
-            w = a if t2 < a else b
-            
-            points = [t0, t1, w]
-            values = [I0, I1, func(w)]
-            
-            if abs(t0 - w) < eps:
-                return t0
+    if isInSegment:
+        return W(u0, u1, u2)
 
-            In = min(values)
-            index = values.index(In)
-            Un = points[index]
-
-            h = h / 2
-            i = 2
-            t0 = Un if Un >= a and Un <= b else w
-            t1 = t0 + h
+    u0 = u1
+    u1 = u2
+    u2 = a if abs(a - u2) < abs (b - u2) else b
+    if func(u2) < minF:
+        return u2
+    return minU
 
 # проверка, является ли тройка точек выпуклой для заданной функции
 def is_convex(u1, u2, u3):
@@ -78,6 +75,3 @@ def W(u1, u2, u3):
     I3 = func(u3)
     return -0.5 * ((I2 - I1)*u3*u3 + (I1 - I3)*u2*u2 + (I3 - I2)*u1*u1) / \
             ((I1 - I2)*u3 + (I3 - I1)*u2 + (I2 - I3)*u1)
-
-#def check(x, y, eps):
- #   return abs(x - y) < eps
