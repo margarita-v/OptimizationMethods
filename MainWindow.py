@@ -9,9 +9,12 @@ import sys
 from Solve import onedimen_solve, twodimen_solve
 from Functions import onedimen_func_str, twodimen_func_str
 
-METHODS = ["Метод деления отрезка пополам", "Метод золотого сечения",
-        "Метод парабол", "Метод Ньютона"]
-METHODS_MULTIDIMENSIONAL = ["Метод дробления шага", "Метод наискорейшего спуска"]
+METHODS = ["Метод деления отрезка пополам",
+        "Метод золотого сечения",
+        "Метод парабол",
+        "Метод Ньютона"]
+METHODS_MULTIDIMENSIONAL = ["Метод дробления шага",
+        "Метод наискорейшего спуска"]
 
 # Номер выбранной пользователем функции
 func_index = 0
@@ -94,6 +97,7 @@ class Window(QMainWindow):
     # событие переключения между вкладками
     def onTabChanged(self, i):
         self.onFirstTab = i == 0
+        self.lblSolve.setText("")   
         self.eps = self.dsbEps.value() if i == 0 else self.dsbEpsSecond.value()
 
     # событие изменения значений параметров для методов одномерной оптимизации
@@ -127,7 +131,7 @@ class Window(QMainWindow):
 
         self.eps = self.dsbEpsSecond.value()
         self.alpha = self.dsbAlpha.value()
-        self.lblSolveSecond.setText("")
+        self.lblSolve.setText("")
     
     # запоминаем номер выбранной пользователем функции
     def funcSelection(self, i):
@@ -145,15 +149,11 @@ class Window(QMainWindow):
 
     # решение задачи
     def get_solve(self):
-        
         point, value = onedimen_solve(method_index, func_index, 
                 self.a, self.b, self.eps, self.x0)
-        message = "Решение задачи:\n\n" + "x = " + format(point, 'f') + \
+        message = "x = " + format(point, 'f') + \
                 "\n\nf(x) = " + format(value, 'f')
-        if self.onFirstTab:
-            self.lblSolve.setText(message)
-        else:
-            self.lblSolveSecond.setText(message)
+        self.lblSolve.setText(message)
     
     # построение графика выбранной функции
     def get_plot(self):

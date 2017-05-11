@@ -12,7 +12,8 @@ def second_derivative(F, x, h):
 def newton_method(a, b, u0, eps, F):
     if second_derivative(F, u0, eps) == 0:
         u0 = b - eps
-    while (abs(first_derivative(F, u0, eps)) >= eps and u0 >= a and u0 <= b):
+    while (abs(first_derivative(F, u0, eps)) >= eps and 
+            u0 >= a and u0 <= b):
         u0 -= first_derivative(F, u0, eps) / second_derivative(F, u0, eps)
     if (u0 >= a and u0 <= b):
         return u0
