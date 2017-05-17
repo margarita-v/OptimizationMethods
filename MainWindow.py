@@ -52,10 +52,6 @@ class Window(QMainWindow):
         self.dsbEps.valueChanged.connect(self.paramsChanged)
         self.dsbFirstPoint.valueChanged.connect(self.paramsChanged)
         # second tab
-        self.dsbX1.valueChanged.connect(self.paramsChangedSecond)
-        self.dsbX2.valueChanged.connect(self.paramsChangedSecond)
-        self.dsbY1.valueChanged.connect(self.paramsChangedSecond)
-        self.dsbY2.valueChanged.connect(self.paramsChangedSecond)
         self.dsbVectorX.valueChanged.connect(self.paramsChangedSecond)
         self.dsbVectorY.valueChanged.connect(self.paramsChangedSecond)
         self.dsbAlpha.valueChanged.connect(self.paramsChangedSecond)
@@ -72,10 +68,6 @@ class Window(QMainWindow):
         self.x0 = self.dsbFirstPoint.value()
 
         # Параметры для многомерной оптимизации
-        self.x1 = self.dsbX1.value()
-        self.x2 = self.dsbX2.value()
-        self.y1 = self.dsbY1.value()
-        self.y2 = self.dsbY2.value()
         self.vectorX = self.dsbVectorX.value()
         self.vectorY = self.dsbVectorY.value()
         self.alpha = self.dsbAlpha.value()
@@ -117,20 +109,6 @@ class Window(QMainWindow):
 
     # событие изменения значений параметров для методов многомерной оптимизации
     def paramsChangedSecond(self):
-        self.x1 = self.dsbX1.value()
-        self.dsbX2.setMinimum(self.x1)
-
-        self.y1 = self.dsbY1.value()
-        self.dsbY2.setMinimum(self.y1)
-
-        self.x2 = self.dsbX2.value()
-        self.y2 = self.dsbY2.value()
-        
-        self.dsbVectorX.setMinimum(self.x1)
-        self.dsbVectorX.setMaximum(self.x2)
-        self.dsbVectorY.setMinimum(self.y1)
-        self.dsbVectorY.setMaximum(self.y2)
-
         self.vectorX = self.dsbVectorX.value()
         self.vectorY = self.dsbVectorY.value()
         self.eps = self.dsbEps.value()

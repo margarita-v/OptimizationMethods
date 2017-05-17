@@ -16,4 +16,6 @@ def splitting_of_step(x0, y0, alpha, eps, func):
             I0 = I1
         else:
             alpha /= 2
+        gradX = x_derivative(x0, y0, eps, func)
+        gradY = y_derivative(x0, y0, eps, func)
     return x0, y0
