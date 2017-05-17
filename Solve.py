@@ -10,7 +10,7 @@ def onedimen_solve(method_index, func_index, a, b, eps, x0):
     elif method_index == 1:
         result = GoldenSection.golden_section(a, b, eps, func)
     elif method_index == 2:
-        result = ParabolicMethod.parabolic_method(a, b, eps, func)
+        result = ParabolicMethod.parabolic_method(a, b, x0, eps, func)
     else:
         result = NewtonMethod.newton_method(a, b, x0, eps, func)
     return result, func(result)

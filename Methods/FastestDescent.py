@@ -30,12 +30,13 @@ def fastest_descent(x, y, alpha, Eps, F):
     global eps, func
     eps = Eps
     func = F
-    while True:
-        gradX = x_derivative(x, y, eps, func)
-        gradY = y_derivative(x, y, eps, func)
-        if norma(gradX, gradY, eps, func) < eps:
-            return x, y
+    
+    gradX = x_derivative(x, y, eps, func)
+    gradY = y_derivative(x, y, eps, func)
+    while norma(gradX, gradY, eps, func) >= eps:
         alpha_new = segment_divide_help(x, y)
         x -= alpha_new * gradX
         y -= alpha_new * gradY
+        gradX = x_derivative(x, y, eps, func)
+        gradY = y_derivative(x, y, eps, func)
     return x, y
