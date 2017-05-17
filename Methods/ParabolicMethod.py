@@ -4,72 +4,60 @@
 func = None
 
 # реализация метода парабол
-def parabolic_method(a, b, eps, F):
+def parabolic_method(a, b, x0, eps, F):
     global func
     func = F
     if a > b:
         a, b = b, a
-    i = 1
-    h = (b - a) / 16
-
-    u0 = u1 = a + (b - a) / 2
-    u2 = u0 + h
-
-    I0 = func(u0)
-    I2 = func(u2)
-    if I0 < I2:
-        minU = u0
-        minF = I0
-    else:
-        minU = u2
-        minF = I2
-    isInSegment = True
-    
-    while isInSegment:
-        u0 = u1
-        u1 = u2
-
-        I0 = func(u0)
+    u1 = a
+    u2 = (a + b) / 2
+    u3 = b
+    while u3 - u1 >= eps and u2 >= a and u2 <= b:
+        d = parabolas_min(u1, u2, u3)
         I1 = func(u1)
-
-        if I1 <= I0:
-            u2 = u0 + h*(2 ** i)
-        else:
-            u1 = u0 - h
-            I0 = I1
-            #I1 = func(u1)
-            u2 = u0 - h*(2 ** i)
         I2 = func(u2)
-
-        # если выпуклая тройка найдена
-        if is_convex(u0, u1, u2):
-            return W(u0, u1, u2)
-        
-        if I2 < minF:
-            minF = I2
-            minU = u2
-        
-        isInSegment = (u2 >= a) and (u2 <= b)
-
-    if isInSegment:
-        return W(u0, u1, u2)
-
-    u0 = u1
-    u1 = u2
-    u2 = a if abs(a - u2) < abs (b - u2) else b
-    if func(u2) < minF:
-        return u2
-    return minU
-
-# проверка, является ли тройка точек выпуклой для заданной функции
-def is_convex(u1, u2, u3):
-    d1 = func(u1) - func(u2)
-    d2 = func(u3) - func(u2)
-    return d1 >= 0 and d2 >= 0 and d1 + d2 > 0
+        I3 = func(u3)
+        Imin = func(d)
+        if d < u2:
+            if Imin < I2:
+                u3 = u2
+                u2 = d
+            elif Imin > I2:
+                u1 = d
+            else:
+                if I1 > I2:
+                    u3 = u2
+                    u2 = d
+                elif I2 > I3:
+                    i1 = d
+        elif d > u2:
+            if Imin < I2:
+                u1 = u2
+                u2 = d
+            elif Imin > I2:
+                u3 = d
+            else:
+                if I3 > I2:
+                    u1 = u2
+                    u2 = d
+                elif I1 > I2:
+                    u3 = d
+        else:
+            if func(u2 - eps) < I2:
+                u2 -= eps
+            elif func(u2 + eps) < I2:
+                u2 += eps
+            else:
+                break
+    if u2 < a:
+        return a
+    if u2 > b:
+        return b
+    return u2
 
 # вычисление точки минимума параболы,
 # построенной через выпуклую тройку точек
-def W(u1, u2, u3):
+def parabolas_min(u1, u2, u3):
     I1 = func(u1)
     I2 = func(u2)
     I3 = func(u3)
