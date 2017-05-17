@@ -158,9 +158,7 @@ class Window(QMainWindow):
     # построение графика выбранной функции
     def get_plot(self):
         if self.onFirstTab:
-            os.system("python DrawPlot.py 1 " + str(func_index))
-        else:
-            os.system("python DrawPlot.py 2 " + str(func_index))
+            os.system("python DrawPlot.py " + str(func_index))
 
 app = QApplication(sys.argv)
 window = Window()

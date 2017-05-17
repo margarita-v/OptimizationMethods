@@ -21,5 +21,5 @@ def choose_twodimen_func(num):
     return lambda x, y: ((x - 4*y)**2 + 9, y)
 
 def twodimen_func_str():
-    return ["f(x,y) = x^2 + y^2",
-            "f(x,y) = (x - 4y)^2 + 9"]
+    return ["z = x^2 + y^2",
+            "z = (x - 4y)^2 + 9"]

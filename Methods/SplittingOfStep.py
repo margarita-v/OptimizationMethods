@@ -1,37 +1,16 @@
 # -*- coding: utf-8 -*-
-from math import sqrt
-
-# заданная пользователем функция
-func = None
-# точность решения
-eps = 0
-
-# нахождение производной по x
-def x_derivative(x, y):
-    return (func(x + eps, y) - func(x - eps, y)) / (2*eps)
-
-# нахождение производной по y
-def y_derivative(x, y):
-    return (func(x, y + eps) - func(x, y - eps)) / (2*eps)
-
-# вычисление нормы
-def norma(x, y):
-    return sqrt(x_derivative(x, y)**2 + y_derivative(x, y)**2)
+from TwodimensionalUtils import x_derivative, y_derivative, norma
 
 # метод дробления шага
-def splitting_of_step(x0, y0, alpha, Eps, F):
-    global func, eps
-    func = F
-    eps = Eps
-
+def splitting_of_step(x0, y0, alpha, eps, func):
     I0 = func(x0, y0)
     calcNextPoint = False
     while True:
         # шаг 2: посчитать градиент и проверить критерий остановки
         if not calcNextPoint:
-            gradX = x_derivative(x0, y0)
-            gradY = y_derivative(x0, y0)
-            if norma(gradX, gradY) < eps:
+            gradX = x_derivative(x0, y0, eps, func)
+            gradY = y_derivative(x0, y0, eps, func)
+            if norma(gradX, gradY, eps, func) < eps:
                 return x0, y0
         # шаг 3: посчитать следующую точку
         x1 = x0 - alpha * gradX
