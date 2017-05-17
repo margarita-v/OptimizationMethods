@@ -17,8 +17,8 @@ def onedimen_func_str():
 # Функции для методов многомерной оптимизации
 def choose_twodimen_func(num):
     if num == 0:
-        return lambda x, y: (x*x + y*y, y)
-    return lambda x, y: ((x - 4*y)**2 + 9, y)
+        return lambda x, y: x*x + y*y
+    return lambda x, y: (x - 4*y)**2 + 9
 
 def twodimen_func_str():
     return ["z = x^2 + y^2",

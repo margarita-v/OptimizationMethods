@@ -95,9 +95,11 @@ class Window(QMainWindow):
         if i == 0:
             self.cbFunc.addItems(onedimen_func_str())
             self.cbMethod.addItems(METHODS)
+            self.btnGraph.setEnabled(True)
         else:
             self.cbFunc.addItems(twodimen_func_str())
             self.cbMethod.addItems(METHODS_MULTIDIMENSIONAL)
+            self.btnGraph.setEnabled(False)
         self.lblSolve.setText("")   
 
     # событие изменения значений параметров для методов одномерной оптимизации
@@ -129,7 +131,9 @@ class Window(QMainWindow):
         self.dsbVectorY.setMinimum(self.y1)
         self.dsbVectorY.setMaximum(self.y2)
 
-        self.eps = self.dsbEpsSecond.value()
+        self.vectorX = self.dsbVectorX.value()
+        self.vectorY = self.dsbVectorY.value()
+        self.eps = self.dsbEps.value()
         self.alpha = self.dsbAlpha.value()
         self.lblSolve.setText("")
     
@@ -149,10 +153,17 @@ class Window(QMainWindow):
 
     # решение задачи
     def get_solve(self):
-        point, value = onedimen_solve(method_index, func_index, 
+        if self.onFirstTab:
+            point, value = onedimen_solve(method_index, func_index, 
                 self.a, self.b, self.eps, self.x0)
-        message = "x = " + format(point, 'f') + \
+            message = "x = " + format(point, 'f') + \
                 "\n\nf(x) = " + format(value, 'f')
+        else:
+            x, y, result = twodimen_solve(method_index, func_index,
+                    self.vectorX, self.vectorY, self.eps, self.alpha)
+            message = "x = " + format(x, 'f') + \
+                    "\ny = " + format(y, 'f') + \
+                    "\nz(x, y) = " + format(result, 'f')
         self.lblSolve.setText(message)
     
     # построение графика выбранной функции
