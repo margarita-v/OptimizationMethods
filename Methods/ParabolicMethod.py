@@ -29,7 +29,7 @@ def parabolic_method(a, b, x0, eps, F):
                     u3 = u2
                     u2 = d
                 elif I2 > I3:
-                    i1 = d
+                    u1 = d
         elif d > u2:
             if Imin < I2:
                 u1 = u2
