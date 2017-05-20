@@ -4,7 +4,7 @@
 func = None
 
 # реализация метода парабол
-def parabolic_method(a, b, x0, eps, F):
+def parabolic_method(a, b, eps, F):
     global func
     func = F
     if a > b:

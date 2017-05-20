@@ -46,14 +46,10 @@ class Window(QMainWindow):
         self.btnSolve.clicked.connect(self.get_solve)
         self.btnSolve.setDefault(True)
         
-        self.lblFirstPoint.setVisible(False)
-        self.dsbFirstPoint.setVisible(False)
-
         # Обработчик изменения значений входных параметров для методов
         self.dsbA.valueChanged.connect(self.paramsChanged)
         self.dsbB.valueChanged.connect(self.paramsChanged)
         self.dsbEps.valueChanged.connect(self.paramsChanged)
-        self.dsbFirstPoint.valueChanged.connect(self.paramsChanged)
         # second tab
         self.dsbVectorX.valueChanged.connect(self.paramsChangedSecond)
         self.dsbVectorY.valueChanged.connect(self.paramsChangedSecond)
@@ -68,7 +64,6 @@ class Window(QMainWindow):
         self.a = self.dsbA.value()
         self.b = self.dsbB.value()
         self.eps = self.dsbEps.value()
-        self.x0 = self.dsbFirstPoint.value()
 
         # Параметры для многомерной оптимизации
         self.vectorX = self.dsbVectorX.value()
@@ -84,7 +79,6 @@ class Window(QMainWindow):
                     "Вы действительно хотите выйти?")
             if result == QMessageBox.Yes:
                 self.close()
-
 
     # событие переключения между вкладками
     def onTabChanged(self, i):
@@ -103,13 +97,8 @@ class Window(QMainWindow):
     def paramsChanged(self):
         self.a = self.dsbA.value()
         self.dsbB.setMinimum(self.a)
-
         self.b = self.dsbB.value()
-        self.dsbFirstPoint.setMinimum(self.a)
-        self.dsbFirstPoint.setMaximum(self.b)
-
         self.eps = self.dsbEps.value()
-        self.x0 = self.dsbFirstPoint.value()
         self.clear_solve()
 
     # событие изменения значений параметров для методов многомерной оптимизации
@@ -131,14 +120,12 @@ class Window(QMainWindow):
         global method_index
         method_index = i
         self.clear_solve()
-        self.lblFirstPoint.setVisible(i > 1)
-        self.dsbFirstPoint.setVisible(i > 1)
 
     # решение задачи
     def get_solve(self):
         if self.onFirstTab:
             point, value = onedimen_solve(method_index, func_index, 
-                self.a, self.b, self.eps, self.x0)
+                self.a, self.b, self.eps)
             message = "x = " + format(point, 'f') + \
                 "\n\nf(x) = " + format(value, 'f')
         else:

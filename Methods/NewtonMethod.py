@@ -9,7 +9,7 @@ def second_derivative(F, x, h):
     return (F(x + h) - 2*F(x) + F(x - h)) / (h**2)
 
 # Нахождение минимума функции методом Ньютона
-def newton_method(a, b, u0, eps, F):
+def newton_method(a, b, eps, F):
     u0 = a + 2*(b - a) / 3
     while (abs(first_derivative(F, u0, eps)) >= eps and 
             u0 >= a and u0 <= b):
