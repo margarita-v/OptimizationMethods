@@ -2,12 +2,13 @@
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 
 import os
 import sys
 from Solve import onedimen_solve, twodimen_solve
 from Functions import onedimen_func_str, twodimen_func_str
+from DrawPlot  import show_2D_plot, show_3D_plot
 
 METHODS = [
         "Метод деления отрезка пополам",
@@ -79,7 +80,11 @@ class Window(QMainWindow):
     # выход из программы по нажатию Esc
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Escape:
-            self.close()
+            result = QMessageBox.question(self, "Подтверждение выхода", 
+                    "Вы действительно хотите выйти?")
+            if result == QMessageBox.Yes:
+                self.close()
+
 
     # событие переключения между вкладками
     def onTabChanged(self, i):
@@ -89,11 +94,9 @@ class Window(QMainWindow):
         if i == 0:
             self.cbFunc.addItems(onedimen_func_str())
             self.cbMethod.addItems(METHODS)
-            self.btnGraph.setEnabled(True)
         else:
             self.cbFunc.addItems(twodimen_func_str())
             self.cbMethod.addItems(METHODS_MULTIDIMENSIONAL)
-            self.btnGraph.setEnabled(False)
         self.clear_solve()
 
     # событие изменения значений параметров для методов одномерной оптимизации
@@ -149,7 +152,9 @@ class Window(QMainWindow):
     # построение графика выбранной функции
     def get_plot(self):
         if self.onFirstTab:
-            os.system("python DrawPlot.py " + str(func_index))
+            show_2D_plot(func_index)
+        else:
+            show_3D_plot(func_index)
 
     # очистка лейбла для вывода результата решения
     def clear_solve(self):
