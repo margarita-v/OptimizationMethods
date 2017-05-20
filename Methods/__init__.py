@@ -1,4 +1,5 @@
-__all__ = ["SegmentDivide",
+__all__ = [
+        "SegmentDivide",
         "GoldenSection",
         "ParabolicMethod",
         "NewtonMethod",

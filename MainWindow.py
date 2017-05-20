@@ -9,11 +9,13 @@ import sys
 from Solve import onedimen_solve, twodimen_solve
 from Functions import onedimen_func_str, twodimen_func_str
 
-METHODS = ["Метод деления отрезка пополам",
+METHODS = [
+        "Метод деления отрезка пополам",
         "Метод золотого сечения",
         "Метод парабол",
         "Метод Ньютона"]
-METHODS_MULTIDIMENSIONAL = ["Метод дробления шага",
+METHODS_MULTIDIMENSIONAL = [
+        "Метод дробления шага",
         "Метод наискорейшего спуска"]
 
 # Номер выбранной пользователем функции
@@ -92,7 +94,7 @@ class Window(QMainWindow):
             self.cbFunc.addItems(twodimen_func_str())
             self.cbMethod.addItems(METHODS_MULTIDIMENSIONAL)
             self.btnGraph.setEnabled(False)
-        self.lblSolve.setText("")   
+        self.clear_solve()
 
     # событие изменения значений параметров для методов одномерной оптимизации
     def paramsChanged(self):
@@ -105,7 +107,7 @@ class Window(QMainWindow):
 
         self.eps = self.dsbEps.value()
         self.x0 = self.dsbFirstPoint.value()
-        self.lblSolve.setText("")   
+        self.clear_solve()
 
     # событие изменения значений параметров для методов многомерной оптимизации
     def paramsChangedSecond(self):
@@ -113,19 +115,19 @@ class Window(QMainWindow):
         self.vectorY = self.dsbVectorY.value()
         self.eps = self.dsbEps.value()
         self.alpha = self.dsbAlpha.value()
-        self.lblSolve.setText("")
+        self.clear_solve()
     
     # запоминаем номер выбранной пользователем функции
     def funcSelection(self, i):
         global func_index
         func_index = i
-        self.lblSolve.setText("")   
+        self.clear_solve()
 
     # запоминаем номер выбранного пользователем метода
     def methodSelection(self, i):
         global method_index
         method_index = i
-        self.lblSolve.setText("")   
+        self.clear_solve()
         self.lblFirstPoint.setVisible(i > 1)
         self.dsbFirstPoint.setVisible(i > 1)
 
@@ -148,6 +150,10 @@ class Window(QMainWindow):
     def get_plot(self):
         if self.onFirstTab:
             os.system("python DrawPlot.py " + str(func_index))
+
+    # очистка лейбла для вывода результата решения
+    def clear_solve(self):
+        self.lblSolve.setText("")
 
 app = QApplication(sys.argv)
 window = Window()

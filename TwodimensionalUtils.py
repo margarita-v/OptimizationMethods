@@ -12,5 +12,3 @@ def y_derivative(x, y, eps, func):
 # вычисление нормы
 def norma(x, y, eps, func):
     return sqrt(x*x + y*y)
-    #return sqrt(x_derivative(x, y, eps, func)**2 +
-     #       y_derivative(x, y, eps, func)**2)
