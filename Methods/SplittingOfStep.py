@@ -2,9 +2,11 @@ from TwodimensionalUtils import x_derivative, y_derivative, norma
 
 def splitting_of_step(x0, y0, alpha, eps, func):
     I0 = func(x0, y0)
-    gradX = x_derivative(x0, y0, eps, func)
-    gradY = y_derivative(x0, y0, eps, func)
-    while norma(gradX, gradY, eps, func) >= eps:
+    while True:
+        gradX = x_derivative(x0, y0, eps, func)
+        gradY = y_derivative(x0, y0, eps, func)
+        if norma(gradX, gradY, eps, func) < eps:
+            break
         x1 = x0 - alpha * gradX
         y1 = y0 - alpha * gradY
         I1 = func(x1, y1)
@@ -14,6 +16,4 @@ def splitting_of_step(x0, y0, alpha, eps, func):
             I0 = I1
         else:
             alpha /= 2
-        gradX = x_derivative(x0, y0, eps, func)
-        gradY = y_derivative(x0, y0, eps, func)
     return x0, y0
