@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Functions import choose_onedimen_func, choose_twodimen_func
 
 from Methods import *

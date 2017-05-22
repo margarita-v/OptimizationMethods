@@ -19,11 +19,6 @@ METHODS_MULTIDIMENSIONAL = [
         "Метод дробления шага",
         "Метод наискорейшего спуска"]
 
-# Номер выбранной пользователем функции
-func_index = 0
-# Номер выбранного пользователем метода
-method_index = 0
-
 class Window(QMainWindow):
     
     def __init__(self):
@@ -70,6 +65,8 @@ class Window(QMainWindow):
         self.vectorY = self.dsbVectorY.value()
         self.alpha = self.dsbAlpha.value()
 
+        self.func_index = 0
+        self.method_index = 0
         self.show()
     
     # выход из программы по нажатию Esc
@@ -111,25 +108,23 @@ class Window(QMainWindow):
     
     # запоминаем номер выбранной пользователем функции
     def funcSelection(self, i):
-        global func_index
-        func_index = i
+        self.func_index = i
         self.clear_solve()
 
     # запоминаем номер выбранного пользователем метода
     def methodSelection(self, i):
-        global method_index
-        method_index = i
+        self.method_index = i
         self.clear_solve()
 
     # решение задачи
     def get_solve(self):
         if self.onFirstTab:
-            point, value = onedimen_solve(method_index, func_index, 
+            point, value = onedimen_solve(self.method_index, self.func_index, 
                 self.a, self.b, self.eps)
             message = "x = " + format(point, 'f') + \
                 "\n\nf(x) = " + format(value, 'f')
         else:
-            x, y, result = twodimen_solve(method_index, func_index,
+            x, y, result = twodimen_solve(self.method_index, self.func_index,
                     self.vectorX, self.vectorY, self.eps, self.alpha)
             message = "x = " + format(x, 'f') + \
                     "\ny = " + format(y, 'f') + \
@@ -139,9 +134,9 @@ class Window(QMainWindow):
     # построение графика выбранной функции
     def get_plot(self):
         if self.onFirstTab:
-            show_2D_plot(func_index)
+            show_2D_plot(self.func_index)
         else:
-            show_3D_plot(func_index)
+            show_3D_plot(self.func_index)
 
     # очистка лейбла для вывода результата решения
     def clear_solve(self):

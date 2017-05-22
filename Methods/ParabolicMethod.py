@@ -1,19 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# заданная пользователем функция
-func = None
-
 # реализация метода парабол
-def parabolic_method(a, b, eps, F):
-    global func
-    func = F
+def parabolic_method(a, b, eps, func):
     if a > b:
         a, b = b, a
     u1 = a
     u2 = (a + b) / 2
     u3 = b
     while u3 - u1 >= eps and u2 >= a and u2 <= b:
-        d = parabolas_min(u1, u2, u3)
+        d = parabolas_min(u1, u2, u3, func)
         I1 = func(u1)
         I2 = func(u2)
         I3 = func(u3)
@@ -57,7 +52,7 @@ def parabolic_method(a, b, eps, F):
 
 # вычисление точки минимума параболы,
 # построенной через выпуклую тройку точек
-def parabolas_min(u1, u2, u3):
+def parabolas_min(u1, u2, u3, func):
     I1 = func(u1)
     I2 = func(u2)
     I3 = func(u3)
