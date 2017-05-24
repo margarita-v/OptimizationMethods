@@ -16,8 +16,8 @@ METHODS = [
         "Метод парабол",
         "Метод Ньютона"]
 METHODS_MULTIDIMENSIONAL = [
-        "Метод дробления шага",
-        "Метод наискорейшего спуска"]
+        "Метод наискорейшего спуска",
+        "Метод дробления шага"]
 
 class Window(QMainWindow):
     
@@ -55,6 +55,9 @@ class Window(QMainWindow):
         self.tabWidget.setCurrentIndex(0)
         self.onFirstTab = True
 
+        self.lblAlpha.setVisible(False)
+        self.dsbAlpha.setVisible(False)
+
         # Параметры для одномерной оптимизации
         self.a = self.dsbA.value()
         self.b = self.dsbB.value()
@@ -88,6 +91,8 @@ class Window(QMainWindow):
         else:
             self.cbFunc.addItems(twodimen_func_str())
             self.cbMethod.addItems(METHODS_MULTIDIMENSIONAL)
+            self.lblAlpha.setVisible(False)
+            self.dsbAlpha.setVisible(False)
         self.clear_solve()
 
     # событие изменения значений параметров для методов одномерной оптимизации
@@ -114,6 +119,9 @@ class Window(QMainWindow):
     # запоминаем номер выбранного пользователем метода
     def methodSelection(self, i):
         self.method_index = i
+        if not self.onFirstTab:
+            self.lblAlpha.setVisible(i > 0)
+            self.dsbAlpha.setVisible(i > 0)
         self.clear_solve()
 
     # решение задачи

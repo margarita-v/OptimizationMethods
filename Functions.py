@@ -1,8 +1,5 @@
-import numpy as np
-
 ONEDIMEN_FUNCTIONS = [
         lambda x: x**4 - x**2,
-        lambda x: np.cos(x + np.pi/2),
         lambda x: (x - 5)**2 + 8]
 TWODIMEN_FUNCTIONS = [
         lambda x, y: 3*x*x + 4*y*y + 1,
@@ -10,7 +7,6 @@ TWODIMEN_FUNCTIONS = [
         lambda x, y: 2*x*x + 2*y*y + 2*x*y + 2*x + 10*y + 10]
 ONEDIMEN_TO_STR = [
         "f(x) = x*x*x*x - x*x",
-        "f(x) = cos(x + pi/2)",
         "f(x) = (x - 5)^2 + 8"]
 TWODIMEN_TO_STR = [
         "z = 3*x*x + 4*y*y + 1", 

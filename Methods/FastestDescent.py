@@ -21,13 +21,13 @@ def help_func(x, y, alpha, eps, func):
             y - alpha * y_derivative(x, y, eps, func))
 
 # метод наискорейшего спуска
-def fastest_descent(x, y, alpha, eps, func):
+def fastest_descent(x, y, eps, func):
     while True:
         gradX = x_derivative(x, y, eps, func)
         gradY = y_derivative(x, y, eps, func)
         if norma(gradX, gradY, eps, func) < eps:
             break
-        alpha_new = segment_divide_help(x, y, eps, func)
-        x -= alpha_new * gradX
-        y -= alpha_new * gradY
+        alpha = segment_divide_help(x, y, eps, func)
+        x -= alpha * gradX
+        y -= alpha * gradY
     return x, y

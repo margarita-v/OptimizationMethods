@@ -20,7 +20,7 @@ def onedimen_solve(method_index, func_index, a, b, eps):
 def twodimen_solve(method_index, func_index, x, y, eps, alpha):
     func = choose_twodimen_func(func_index)
     if method_index == 0:
-        x, y = SplittingOfStep.splitting_of_step(x, y, alpha, eps, func)
+        x, y = FastestDescent.fastest_descent(x, y, eps, func)
     else:
-        x, y = FastestDescent.fastest_descent(x, y, alpha, eps, func)
+        x, y = SplittingOfStep.splitting_of_step(x, y, alpha, eps, func)
     return x, y, func(x, y)
